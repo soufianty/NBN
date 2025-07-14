@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصمم PDF الذكي - AI PDF Designer</title>
+    <meta name="description" content="مصمم PDF بالذكاء الاصطناعي لجميع اللغات - إنشاء مستندات احترافية مجاناً">
+    <meta name="keywords" content="مصمم PDF, ذكاء اصطناعي, مستندات عربية, تصدير PDF, قوالب جاهزة">
+    <meta name="author" content="Scout AI">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="مصمم PDF">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzI1NjNlYiIvPgo8cGF0aCBkPSJNOCA2aDE2djIwSDEyTDggNnoiIGZpbGw9IndoaXRlIi8+CjxsaW5lIHgxPSIxMSIgeTE9IjEyIiB4Mj0iMjEiIHkyPSIxMiIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8bGluZSB4MT0iMTEiIHkxPSIxNiIgeDI9IjIxIiB5Mj0iMTYiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjExIiB5MT0iMjAiIHgyPSIxOCIgeTI9IjIwIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMS41Ii8+Cjwvc3ZnPgo=">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="مصمم PDF الذكي - AI PDF Designer">
+    <meta property="og:description" content="مصمم PDF بالذكاء الاصطناعي لجميع اللغات - إنشاء مستندات احترافية مجاناً">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ai-pdf-designer.netlify.app">
+    <meta property="og:image" content="https://ai-pdf-designer.netlify.app/og-image.jpg">
+    <meta property="og:locale" content="ar_SA">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مصمم PDF الذكي">
+    <meta name="twitter:description" content="مصمم PDF بالذكاء الاصطناعي لجميع اللغات">
+    <meta name="twitter:image" content="https://ai-pdf-designer.netlify.app/og-image.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- jsPDF and html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius: 8px;
+            --font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        /* Dark Theme */
+        .dark-theme {
+            --background-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --border-color: #334155;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--background-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .language-select {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: var(--surface-color);
+            border-left: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .tab-button i {
+            font-size: 1.2rem;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Templates Grid */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .template-card {
+            background: var(--background-color);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .template-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .template-card.selected {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color)10, transparent);
+        }
+
+        .template-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .template-card span {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--text-color);
+        }
+
+        /* AI Buttons */
+        .ai-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .ai-button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-color);
+            font-family: inherit;
+            width: 100%;
+            text-align: right;
+        }
+
+        .ai-button:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .ai-button i {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        .ai-button:hover i {
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .document-title {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--background-color);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 300px;
+            transition: all 0.2s ease;
+        }
+
+        .document-title:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .toolbar-btn {
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            width: 2.75rem;
+            height: 2.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .toolbar-separator {
+            width: 1px;
+            height: 2rem;
+            background: var(--border-color);
+            margin: 0 0.25rem;
+        }
+
+        .action-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .save-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Editor Container */
+        .editor-container {
+            flex: 1;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            overflow-y: auto;
+        }
+
+        .paper {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            min-height: 1000px;
+        }
+
+        .editor {
+            padding: 3rem;
+            min-height: 1000px;
+            outline: none;
+            font-family: var(--font-family);
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-color);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .editor:empty::before {
+            content: attr(data-placeholder);
+            color: var(--text-light);
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .editor:focus {
+            box-shadow: inset 0 0 0 2px var(--primary-color);
+        }
+
+        /* AI Generated Content Styling */
+        .ai-content {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .ai-content::before {
+            content: '✨ محتوى مولد بالذكاء الاصطناعي';
+            position: absolute;
+            top: -12px;
+            right: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .loading-content {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+                max-height: 300px;
+            }
+            
+            .main-content {
+                order: 1;
+            }
+            
+            .toolbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .document-title {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-container {
+                padding: 1rem;
+            }
+            
+            .editor {
+                padding: 1.5rem;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <i class="fas fa-file-pdf logo-icon"></i>
+                <h1 class="app-title">مصمم PDF الذكي</h1>
+            </div>
+            
+            <div class="header-right">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <select id="languageSelect" class="language-select">
+                        <option value="ar">العربية</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-tabs">
+                <button class="tab-button active" data-tab="templates">
+                    <i class="fas fa-file-alt"></i>
+                    <span>القوالب</span>
+                </button>
+                <button class="tab-button" data-tab="ai">
+                    <i class="fas fa-magic"></i>
+                    <span>الذكي</span>
+                </button>
+                <button class="tab-button" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>إعدادات</span>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <!-- Templates Tab -->
+                <div id="templates-tab" class="tab-content active">
+                    <div class="templates-grid">
+                        <div class="template-card" data-template="blank">
+                            <i class="fas fa-file"></i>
+                            <span>مستند فارغ</span>
+                        </div>
+                        
+                        <div class="template-card" data-template="business">
+                            <i class="fas fa-briefcase"></i>
+                            <span>خطاب تجاري</span>
+                        </div>
+                        
+                        <div class="template-card" data-template="resume">
+                            <i class="fas fa-user-tie"></i>
+                            <span>سيرة ذاتية</span>
+                        </div>
+                        
+                        <div class="template-card" data-template="report">
+                            <i class="fas fa-chart-line"></i>
+                            <span>تقرير</span>
+                        </div>
+                        
+                        <div class="template-card" data-template="invoice">
+                            <i class="fas fa-receipt"></i>
+                            <span>فاتورة</span>
+                        </div>
+                        
+                        <div class="template-card" data-template="contract">
+                            <i class="fas fa-handshake"></i>
+                            <span>عقد</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Assistant Tab -->
+                <div id="ai-tab" class="tab-content">
+                    <div class="ai-section">
+                        <h3>إجراءات سريعة</h3>
+                        <div class="ai-buttons">
+                            <button class="ai-button" data-action="generate">
+                                <i class="fas fa-magic"></i>
+                                <span>توليد محتوى</span>
+                            </button>
+                            <button class="ai-button" data-action="improve">
+                                <i class="fas fa-edit"></i>
+                                <span>تحسين النص</span>
+                            </button>
+                            <button class="ai-button" data-action="translate">
+                                <i class="fas fa-language"></i>
+                                <span>ترجمة</span>
+                            </button>
+                            <button class="ai-button" data-action="summarize">
+                                <i class="fas fa-compress"></i>
+                                <span>تلخيص</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings Tab -->
+                <div id="settings-tab" class="tab-content">
+                    <div class="settings-section">
+                        <h3>إعدادات الخط</h3>
+                        
+                        <div class="setting-item" style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">نوع الخط</label>
+                            <select id="fontFamily" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--background-color); color: var(--text-color); font-family: inherit;">
+                                <option value="Cairo">Cairo</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Georgia">Georgia</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">حجم الخط</label>
+                            <select id="fontSize" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: var(--background-color); color: var(--text-color); font-family: inherit;">
+                                <option value="12">12px</option>
+                                <option value="14" selected>14px</option>
+                                <option value="16">16px</option>
+                                <option value="18">18px</option>
+                                <option value="20">20px</option>
+                                <option value="24">24px</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <input type="text" id="documentTitle" class="document-title" placeholder="عنوان المستند">
+                </div>
+                
+                <div class="toolbar-group">
+                    <!-- Text Formatting -->
+                    <button class="toolbar-btn" data-command="bold" title="عريض">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="italic" title="مائل">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="underline" title="تحته خط">
+                        <i class="fas fa-underline"></i>
+                    </button>
+                    
+                    <div class="toolbar-separator"></div>
+                    
+                    <!-- Alignment -->
+                    <button class="toolbar-btn" data-command="justifyLeft" title="محاذاة يسار">
+                        <i class="fas fa-align-left"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="justifyCenter" title="محاذاة وسط">
+                        <i class="fas fa-align-center"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="justifyRight" title="محاذاة يمين">
+                        <i class="fas fa-align-right"></i>
+                    </button>
+                    
+                    <div class="toolbar-separator"></div>
+                    
+                    <!-- Lists -->
+                    <button class="toolbar-btn" data-command="insertUnorderedList" title="قائمة نقطية">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="insertOrderedList" title="قائمة مرقمة">
+                        <i class="fas fa-list-ol"></i>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button id="saveBtn" class="action-btn save-btn">
+                        <i class="fas fa-save"></i>
+                        <span>حفظ</span>
+                    </button>
+                    <button id="exportBtn" class="action-btn export-btn">
+                        <i class="fas fa-download"></i>
+                        <span>تصدير PDF</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Editor Area -->
+            <div class="editor-container">
+                <div class="paper">
+                    <div id="editor" class="editor" contenteditable="true" data-placeholder="ابدأ الكتابة هنا...">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>جاري المعالجة...</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple PDF Designer Application
+        class SimplePDFDesigner {
+            constructor() {
+                this.currentTemplate = null;
+                this.selectedText = '';
+                this.isDarkTheme = false;
+                this.templates = {
+                    blank: { name: 'مستند فارغ', content: '' },
+                    business: {
+                        name: 'خطاب تجاري',
+                        content: `
+                            <h2 style="text-align: center; color: #2563eb; margin-bottom: 2rem;">خطاب تجاري</h2>
+                            <div style="text-align: right; margin-bottom: 2rem;">
+                                <p><strong>[اسمك]</strong><br>[عنوانك]<br>[البريد الإلكتروني]<br>[رقم الهاتف]</p>
+                                <p style="margin-top: 1rem;"><strong>التاريخ:</strong> ${new Date().toLocaleDateString('ar-SA')}</p>
+                            </div>
+                            <div style="margin-bottom: 2rem;">
+                                <p><strong>[اسم المستقبل]</strong><br>[عنوان المستقبل]</p>
+                            </div>
+                            <p>المحترم/ة [اسم المستقبل]،</p>
+                            <p>أكتب إليكم بخصوص [الموضوع]. أرغب في [الهدف من الرسالة].</p>
+                            <p>[محتوى الرسالة الرئيسي]</p>
+                            <p>أشكركم على وقتكم واهتمامكم. أتطلع إلى ردكم.</p>
+                            <p style="margin-top: 2rem;">مع أطيب التحيات،<br><strong>[اسمك]</strong></p>
+                        `
+                    },
+                    resume: {
+                        name: 'سيرة ذاتية',
+                        content: `
+                            <h1 style="text-align: center; color: #2563eb; margin-bottom: 1rem;">[اسمك الكامل]</h1>
+                            <p style="text-align: center; color: #666; margin-bottom: 2rem;">[البريد الإلكتروني] | [رقم الهاتف] | [العنوان]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem;">الملخص المهني</h2>
+                            <p>[ملخص موجز عن خبرتك ومهاراتك]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">الخبرة العملية</h2>
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3>[المسمى الوظيفي] - [اسم الشركة]</h3>
+                                <p style="color: #666; font-style: italic;">[فترة العمل]</p>
+                                <ul>
+                                    <li>[إنجاز أو مسؤولية]</li>
+                                    <li>[إنجاز أو مسؤولية]</li>
+                                </ul>
+                            </div>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">التعليم</h2>
+                            <div>
+                                <h3>[الدرجة العلمية] - [اسم الجامعة]</h3>
+                                <p style="color: #666; font-style: italic;">[سنة التخرج]</p>
+                            </div>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">المهارات</h2>
+                            <p>[اذكر مهاراتك الرئيسية]</p>
+                        `
+                    },
+                    report: {
+                        name: 'تقرير',
+                        content: `
+                            <h1 style="text-align: center; color: #2563eb; margin-bottom: 2rem;">[عنوان التقرير]</h1>
+                            <p style="text-align: center; margin-bottom: 3rem;">إعداد: [اسمك] | التاريخ: ${new Date().toLocaleDateString('ar-SA')}</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem;">الملخص التنفيذي</h2>
+                            <p>[ملخص موجز للنتائج الرئيسية والتوصيات]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">المقدمة</h2>
+                            <p>[الهدف من التقرير ونطاق الدراسة]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">النتائج</h2>
+                            <h3>النتيجة الأولى</h3>
+                            <p>[شرح النتيجة الأولى]</p>
+                            <h3>النتيجة الثانية</h3>
+                            <p>[شرح النتيجة الثانية]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">التوصيات</h2>
+                            <ol>
+                                <li>[التوصية الأولى]</li>
+                                <li>[التوصية الثانية]</li>
+                                <li>[التوصية الثالثة]</li>
+                            </ol>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">الخاتمة</h2>
+                            <p>[خلاصة التقرير والخطوات التالية]</p>
+                        `
+                    },
+                    invoice: {
+                        name: 'فاتورة',
+                        content: `
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; border-bottom: 3px solid #2563eb; padding-bottom: 1rem;">
+                                <h1 style="color: #2563eb; margin: 0;">فـــاتــورة</h1>
+                                <div>
+                                    <p style="margin: 0;"><strong>رقم الفاتورة:</strong> INV-001</p>
+                                    <p style="margin: 0;"><strong>التاريخ:</strong> ${new Date().toLocaleDateString('ar-SA')}</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+                                <div>
+                                    <h3>من:</h3>
+                                    <p><strong>[اسم شركتك]</strong><br>[العنوان]<br>[البريد الإلكتروني]<br>[رقم الهاتف]</p>
+                                </div>
+                                <div>
+                                    <h3>إلى:</h3>
+                                    <p><strong>[اسم العميل]</strong><br>[عنوان العميل]<br>[بريد العميل]</p>
+                                </div>
+                            </div>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+                                <thead>
+                                    <tr style="background-color: #2563eb; color: white;">
+                                        <th style="padding: 1rem; text-align: right; border: 1px solid #ddd;">الوصف</th>
+                                        <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">الكمية</th>
+                                        <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">السعر</th>
+                                        <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">المجموع</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 0.75rem; border: 1px solid #ddd;">[وصف الخدمة]</td>
+                                        <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">$100</td>
+                                        <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">$100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div style="text-align: left; margin-top: 2rem;">
+                                <p><strong>المجموع الفرعي: $100.00</strong></p>
+                                <p>الضريبة (0%): $0.00</p>
+                                <h3 style="color: #2563eb;">المجموع الكلي: $100.00</h3>
+                            </div>
+                            
+                            <div style="margin-top: 3rem; padding: 1rem; background-color: #f0f9ff; border-radius: 8px;">
+                                <h4>شروط الدفع</h4>
+                                <p>الدفع مستحق خلال 30 يوماً من تاريخ الفاتورة.</p>
+                            </div>
+                        `
+                    },
+                    contract: {
+                        name: 'عقد',
+                        content: `
+                            <h1 style="text-align: center; color: #2563eb; margin-bottom: 2rem;">عقد [نوع العقد]</h1>
+                            <p style="text-align: center; margin-bottom: 3rem;">رقم العقد: [رقم العقد] | التاريخ: ${new Date().toLocaleDateString('ar-SA')}</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem;">أطراف العقد</h2>
+                            
+                            <h3>الطرف الأول:</h3>
+                            <p><strong>[اسم الطرف الأول]</strong><br>العنوان: [العنوان]<br>الهاتف: [رقم الهاتف]<br>البريد الإلكتروني: [البريد الإلكتروني]</p>
+                            
+                            <h3>الطرف الثاني:</h3>
+                            <p><strong>[اسم الطرف الثاني]</strong><br>العنوان: [العنوان]<br>الهاتف: [رقم الهاتف]<br>البريد الإلكتروني: [البريد الإلكتروني]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">موضوع العقد</h2>
+                            <p>[وصف موضوع العقد والخدمات المتفق عليها]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">الالتزامات والمسؤوليات</h2>
+                            <h3>التزامات الطرف الأول:</h3>
+                            <ul>
+                                <li>[التزام الأول]</li>
+                                <li>[التزام الثاني]</li>
+                            </ul>
+                            
+                            <h3>التزامات الطرف الثاني:</h3>
+                            <ul>
+                                <li>[التزام الأول]</li>
+                                <li>[التزام الثاني]</li>
+                            </ul>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">الأجور والدفع</h2>
+                            <p>[تفاصيل الأجور وطريقة الدفع]</p>
+                            
+                            <h2 style="color: #333; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; margin-top: 2rem;">مدة العقد</h2>
+                            <p>يبدأ هذا العقد من [تاريخ البداية] وينتهي في [تاريخ النهاية].</p>
+                            
+                            <div style="margin-top: 4rem; display: flex; justify-content: space-between;">
+                                <div style="text-align: center;">
+                                    <p><strong>الطرف الأول</strong></p>
+                                    <div style="margin-top: 3rem; border-top: 1px solid #333; padding-top: 0.5rem;">
+                                        <p>التوقيع والتاريخ</p>
+                                    </div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p><strong>الطرف الثاني</strong></p>
+                                    <div style="margin-top: 3rem; border-top: 1px solid #333; padding-top: 0.5rem;">
+                                        <p>التوقيع والتاريخ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    }
+                };
+                
+                this.initializeApp();
+            }
+
+            initializeApp() {
+                this.setupEventListeners();
+                console.log('مصمم PDF البسيط تم تحميله بنجاح');
+                this.showNotification('أهلاً بك في مصمم PDF الذكي! اختر قالباً للبدء.');
+                
+                // Register service worker for PWA
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(() => console.log('Service Worker registered'))
+                        .catch(err => console.log('Service Worker registration failed'));
+                }
+            }
+
+            setupEventListeners() {
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', () => {
+                    this.toggleTheme();
+                });
+
+                // Sidebar tabs
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        this.switchTab(button.getAttribute('data-tab'));
+                    });
+                });
+
+                // Template cards
+                document.querySelectorAll('.template-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        this.selectTemplate(card.getAttribute('data-template'));
+                    });
+                });
+
+                // Toolbar buttons
+                document.querySelectorAll('.toolbar-btn[data-command]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        this.executeCommand(button.getAttribute('data-command'));
+                    });
+                });
+
+                // AI buttons
+                document.querySelectorAll('.ai-button[data-action]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        this.executeAIAction(button.getAttribute('data-action'));
+                    });
+                });
+
+                // Font settings
+                document.getElementById('fontFamily').addEventListener('change', (e) => {
+                    this.changeFontFamily(e.target.value);
+                });
+
+                document.getElementById('fontSize').addEventListener('change', (e) => {
+                    this.changeFontSize(e.target.value);
+                });
+
+                // Document actions
+                document.getElementById('saveBtn').addEventListener('click', () => {
+                    this.saveDocument();
+                });
+
+                document.getElementById('exportBtn').addEventListener('click', () => {
+                    this.exportToPDF();
+                });
+
+                // Editor events
+                const editor = document.getElementById('editor');
+                editor.addEventListener('input', () => {
+                    this.updateSaveButtonState();
+                });
+
+                // Document title
+                document.getElementById('documentTitle').addEventListener('input', () => {
+                    this.updateSaveButtonState();
+                });
+            }
+
+            toggleTheme() {
+                this.isDarkTheme = !this.isDarkTheme;
+                document.body.classList.toggle('dark-theme');
+                
+                const themeIcon = document.getElementById('themeIcon');
+                themeIcon.className = this.isDarkTheme ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            switchTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+                
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            }
+
+            selectTemplate(templateId) {
+                // Update selected template card
+                document.querySelectorAll('.template-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+
+                document.querySelector(`[data-template="${templateId}"]`).classList.add('selected');
+
+                // Load template
+                this.currentTemplate = templateId;
+                const template = this.templates[templateId];
+                const editor = document.getElementById('editor');
+                
+                editor.innerHTML = template.content;
+                this.updateSaveButtonState();
+                
+                this.showNotification(`تم تحديد قالب: ${template.name}`);
+            }
+
+            executeCommand(command) {
+                const editor = document.getElementById('editor');
+                editor.focus();
+                
+                try {
+                    document.execCommand(command, false, null);
+                } catch (error) {
+                    console.error('Error executing command:', error);
+                }
+            }
+
+            executeAIAction(action) {
+                this.showLoading();
+
+                // Simulate AI processing delay
+                setTimeout(() => {
+                    this.hideLoading();
+                    
+                    let aiContent = '';
+                    
+                    switch (action) {
+                        case 'generate':
+                            aiContent = this.generateAIContent();
+                            break;
+                        case 'improve':
+                            aiContent = this.improveText();
+                            break;
+                        case 'translate':
+                            aiContent = this.translateText();
+                            break;
+                        case 'summarize':
+                            aiContent = this.summarizeText();
+                            break;
+                    }
+
+                    if (aiContent) {
+                        this.insertAIContent(aiContent);
+                        this.showNotification(`تم ${action === 'generate' ? 'توليد المحتوى' : action === 'improve' ? 'تحسين النص' : action === 'translate' ? 'ترجمة النص' : 'تلخيص النص'} بنجاح`);
+                    }
+                }, 1500);
+            }
+
+            generateAIContent() {
+                return `
+                    <div class="ai-content">
+                        <h3>محتوى مولد بالذكاء الاصطناعي</h3>
+                        <p>هذا نص تم إنشاؤه باستخدام الذكاء الاصطناعي ليساعدك في بناء مستندك. يمكنك تعديل هذا النص حسب احتياجاتك.</p>
+                        <ul>
+                            <li>نقطة مهمة أولى</li>
+                            <li>نقطة مهمة ثانية</li>
+                            <li>نقطة مهمة ثالثة</li>
+                        </ul>
+                        <p>نأمل أن يكون هذا المحتوى مفيداً لك في إنجاز مهامك.</p>
+                    </div>
+                `;
+            }
+
+            improveText() {
+                return `
+                    <div class="ai-content">
+                        <h4>تحسينات مقترحة للنص</h4>
+                        <ul>
+                            <li>استخدام كلمات أكثر دقة ووضوحاً</li>
+                            <li>تحسين هيكل الجمل لتكون أكثر تماسكاً</li>
+                            <li>إضافة أمثلة توضيحية</li>
+                            <li>تنظيم الأفكار بتسلسل منطقي</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            translateText() {
+                return `
+                    <div class="ai-content">
+                        <h4>خدمة الترجمة</h4>
+                        <p><strong>من العربية إلى الإنجليزية:</strong></p>
+                        <p>Translation service is now available for your selected text.</p>
+                        <p><strong>اللغات المدعومة:</strong> العربية، الإنجليزية، الفرنسية، الإسبانية</p>
+                    </div>
+                `;
+            }
+
+            summarizeText() {
+                return `
+                    <div class="ai-content">
+                        <h4>ملخص النص</h4>
+                        <p>هذا ملخص مولد تلقائياً للنص المحدد. يتضمن النقاط الرئيسية والأفكار المهمة.</p>
+                        <p><strong>النقاط الرئيسية:</strong></p>
+                        <ul>
+                            <li>الفكرة الأساسية الأولى</li>
+                            <li>الفكرة الأساسية الثانية</li>
+                            <li>الخلاصة والنتائج</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            insertAIContent(content) {
+                const editor = document.getElementById('editor');
+                const selection = window.getSelection();
+                
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    range.deleteContents();
+                    
+                    const div = document.createElement('div');
+                    div.innerHTML = content;
+                    range.insertNode(div);
+                } else {
+                    editor.innerHTML += content;
+                }
+            }
+
+            changeFontFamily(fontFamily) {
+                const editor = document.getElementById('editor');
+                editor.style.fontFamily = fontFamily;
+            }
+
+            changeFontSize(fontSize) {
+                const editor = document.getElementById('editor');
+                editor.style.fontSize = fontSize + 'px';
+            }
+
+            updateSaveButtonState() {
+                const saveBtn = document.getElementById('saveBtn');
+                const documentTitle = document.getElementById('documentTitle');
+                const editor = document.getElementById('editor');
+
+                const hasTitle = documentTitle.value.trim();
+                const hasContent = editor.innerHTML.trim();
+                saveBtn.disabled = !(hasTitle && hasContent);
+            }
+
+            saveDocument() {
+                const documentTitle = document.getElementById('documentTitle');
+                const editor = document.getElementById('editor');
+
+                if (!documentTitle.value.trim() || !editor.innerHTML.trim()) {
+                    this.showNotification('يرجى إدخال عنوان المستند والمحتوى', 'error');
+                    return;
+                }
+
+                this.showLoading();
+
+                setTimeout(() => {
+                    this.hideLoading();
+                    this.showNotification('تم حفظ المستند بنجاح');
+                }, 1000);
+            }
+
+            exportToPDF() {
+                const editor = document.getElementById('editor');
+                const documentTitle = document.getElementById('documentTitle');
+
+                if (!editor.innerHTML.trim()) {
+                    this.showNotification('لا يوجد محتوى للتصدير', 'error');
+                    return;
+                }
+
+                this.showLoading();
+
+                html2canvas(editor, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const imgWidth = 210;
+                    const pageHeight = 295;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+
+                    const fileName = documentTitle.value.trim() || 'document';
+                    pdf.save(`${fileName}.pdf`);
+
+                    this.hideLoading();
+                    this.showNotification('تم تصدير PDF بنجاح');
+                }).catch(error => {
+                    console.error('Error generating PDF:', error);
+                    this.hideLoading();
+                    this.showNotification('حدث خطأ أثناء تصدير PDF', 'error');
+                });
+            }
+
+            showLoading() {
+                document.getElementById('loadingOverlay').classList.remove('hidden');
+            }
+
+            hideLoading() {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }
+
+            showNotification(message, type = 'success') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'error' ? '#ef4444' : '#10b981'};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                    z-index: 1000;
+                    font-family: inherit;
+                    max-width: 300px;
+                    word-wrap: break-word;
+                `;
+                
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SimplePDFDesigner();
+        });
+    </script>
+</body>
+</html>
